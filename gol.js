@@ -2,14 +2,22 @@ class GameOfLifeSimulation {
     constructor(resX, resY, speed) {
         this.res_x = resX;
         this.res_y = resY;
-        this.delay = 1000 - Math.round(speed * 10);
+        this.delay = speed;
+    }
+
+    add_living_cell(x, y) {
+        x = Math.min(Math.max(x, 0), this.res_x - 1);
+        y = Math.min(Math.max(y, 0), this.res_y - 1);
+        this.gol[y][x] = 1;
     }
 
     __gen2DArray(width, height) {
         let arr = [];
-        for (let y = 0; y < height; y++)
+        for (let y = 0; y < height; y++) {
+            arr[y] = [];
             for (let x = 0; x < width; x++)
-                array[y][x] = 0;
+                arr[y][x] = 0;
+        }
         return arr;
     }
 
@@ -24,12 +32,19 @@ class GameOfLifeSimulation {
     }
 
     __simulation_loop() {
-        let tempGol;
+        let tempGol = this.__gen2DArray(this.res_x, this.res_y);
         for (let y = 0; y < this.res_y; y++) {
             for (let x = 0; x < this.res_x; x++) {
                 let nbrs = this.__check_neighbors(x, y);
+                let crnt = this.gol[y][x] ? true : false;
+                if (crnt && nbrs < 2) tempGol[y][x] = 0;
+                else if (crnt && (nbrs == 2 || nbrs == 3)) tempGol[y][x] = 1;
+                else if (crnt && nbrs > 3) tempGol[y][x] = 0;
+                else if (!crnt && nbrs == 3) tempGol[y][x] = 1;
+                else tempGol[y][x] = this.gol[y][x];
             }
         }
+        this.gol = tempGol;
     }
 
     __to_raw_data() {
@@ -41,16 +56,28 @@ class GameOfLifeSimulation {
                 flat.push([cp, cp, cp, cp]);
             }
         }
-        flat.reduce((xs, ys) => xs.concat(ys));
-        return new ImageData(Uint8ClampedArray.from(flat), 2, 2);
+        flat = flat.reduce((xs, ys) => xs.concat(ys));
+        return new ImageData(Uint8ClampedArray.from(flat), this.res_x, this.res_y);
     }
 
     initialize() {
         this.gol = this.__gen2DArray(this.res_x, this.res_y);
     }
 
+    seed_random() {
+        for (let y = 0; y < this.res_y; y++) {
+            for (let x = 0; x < this.res_x; x++) {
+                let r = Math.random() > 0.9 ? true : false;
+                if (r) this.gol[y][x] = 1;
+            }
+        }
+    }
+
     start() {
-        this.runner = setInterval(this.__simulation_loop, this.speed);
+        this.runner = window.setInterval(() => {
+            this.__simulation_loop()
+        }, this.delay);
+        //this.__simulation_loop();
     }
 
     stop() {

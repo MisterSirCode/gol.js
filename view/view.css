@@ -68,12 +68,20 @@ button:hover {
     bottom: 0;
 }
 
-.golcvs {
+canvas {
     position: fixed;
     width: 512px;
     height: 512px;
     top: 24px;
-    left: 0;
     right: 0;
     bottom: 0;
+    image-rendering: pixelated;
+}
+
+.golcvs {
+    left: -512px;
+}
+
+.final {
+    left: 0;
 }

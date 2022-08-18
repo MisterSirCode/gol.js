@@ -8,7 +8,13 @@ class GameOfLifeSimulation {
     add_living_cell(x, y) {
         x = Math.min(Math.max(x, 0), this.res_x - 1);
         y = Math.min(Math.max(y, 0), this.res_y - 1);
-        this.gol[y][x] = 1;
+        for (let iy = -1; iy < 2; iy++) {
+            for (let ix = -1; ix < 2; ix++) {
+                if (Math.random() > 0.5) 
+                    if (this.gol[y + iy])
+                        if (this.gol[y + iy][x + ix]) this.gol[y + iy][x + ix] = 1;
+            }
+        }
     }
 
     __gen2DArray(width, height) {
@@ -67,8 +73,7 @@ class GameOfLifeSimulation {
     seed_random() {
         for (let y = 0; y < this.res_y; y++) {
             for (let x = 0; x < this.res_x; x++) {
-                let r = Math.random() > 0.9 ? true : false;
-                if (r) this.gol[y][x] = 1;
+                if (Math.random() > 0.9) this.gol[y][x] = 1;
             }
         }
     }

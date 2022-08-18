@@ -33,11 +33,9 @@ cvs.addEventListener('mouseenter', () => { isMouseOverCanvas = true })
 cvs.addEventListener('mouseleave', () => { isMouseOverCanvas = false })
 cvs.addEventListener('mousemove', (e) => {
     if (isMousePressed && isMouseOverCanvas) {
-        console.log("mouse over and pressed");
         let pos = getMousePos(cvs, e);
         gol.add_living_cell(Math.round(pos.x / sclr), Math.round(pos.y / sclr));
     }
-    console.log("mouse over");
 })
 
 function renderLoop() {

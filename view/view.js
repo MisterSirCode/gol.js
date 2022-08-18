@@ -4,7 +4,7 @@ document.querySelector('.menuClose').addEventListener('click', (e) => windowCont
 const size = 64;
 const finl = 512;
 const sclr = finl / size;
-const gol = new GameOfLifeSimulation(size, size, 10);
+const gol = new GameOfLifeSimulation(size, size, 100);
 const cvsp = document.querySelector('.golcvs');
 const ctxp = cvsp.getContext('2d');
 const cvs = document.querySelector('.final');
@@ -27,16 +27,18 @@ function getMousePos(canvas, evt) {
     };
 }
 
-cvs.addEventListener('mousedown', () => { isMousePressed = true })
-cvs.addEventListener('mouseup', () => { isMousePressed = false })
-cvs.addEventListener('mouseenter', () => { isMouseOverCanvas = true })
-cvs.addEventListener('mouseleave', () => { isMouseOverCanvas = false })
-cvs.addEventListener('mousemove', (e) => {
+cvs.addEventListener('mouseover', () => { isMouseOverCanvas = true });
+cvs.addEventListener('mouseleave', () => { isMouseOverCanvas = false });
+function runclick(e) {
     if (isMousePressed && isMouseOverCanvas) {
         let pos = getMousePos(cvs, e);
         gol.add_living_cell(Math.round(pos.x / sclr), Math.round(pos.y / sclr));
     }
-})
+}
+cvs.addEventListener('mousedown', (e) => { isMousePressed = true; runclick(e); });
+cvs.addEventListener('mouseup', () => { isMousePressed = false });
+cvs.addEventListener('mousemove', runclick);
+cvs.addEventListener('click', runclick);
 
 function renderLoop() {
     ctxp.clearRect(0, 0, size, size);

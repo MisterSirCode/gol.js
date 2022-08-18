@@ -6,13 +6,12 @@ class GameOfLifeSimulation {
     }
 
     add_living_cell(x, y) {
-        x = Math.min(Math.max(x, 0), this.res_x - 1);
-        y = Math.min(Math.max(y, 0), this.res_y - 1);
         for (let iy = -1; iy < 2; iy++) {
             for (let ix = -1; ix < 2; ix++) {
-                if (Math.random() > 0.5) 
-                    if (this.gol[y + iy])
-                        if (this.gol[y + iy][x + ix]) this.gol[y + iy][x + ix] = 1;
+                x = Math.min(Math.max(x + ix, 0), this.res_x - 1);
+                y = Math.min(Math.max(y + iy, 0), this.res_y - 1);
+                if (Math.random() > 0.5)
+                    this.gol[y][x] = 1;
             }
         }
     }
@@ -51,6 +50,9 @@ class GameOfLifeSimulation {
             }
         }
         this.gol = tempGol;
+        window.requestAnimationFrame(() => {
+                this.__simulation_loop()
+            });
     }
 
     __to_raw_data() {
@@ -79,9 +81,12 @@ class GameOfLifeSimulation {
     }
 
     start() {
-        this.runner = window.setInterval(() => {
-            this.__simulation_loop()
-        }, this.delay);
+        // this.runner = window.setInterval(() => {
+        //     this.__simulation_loop()
+        // }, this.delay);
+        window.requestAnimationFrame(() => {
+                this.__simulation_loop()
+            });
         //this.__simulation_loop();
     }
 

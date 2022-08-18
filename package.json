@@ -1,0 +1,22 @@
+{
+  "name": "gol",
+  "version": "1.0.0",
+  "description": "NodeJS GoL Implementation because Im bored",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MisterSirCode/gol.js.git"
+  },
+  "author": "SirCode",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MisterSirCode/gol.js/issues"
+  },
+  "homepage": "https://github.com/MisterSirCode/gol.js#readme",
+  "devDependencies": {
+    "electron": "^20.0.3"
+  }
+}
